@@ -1,0 +1,5 @@
+create table public.trainer_authority (
+	id varchar(30) not null  --포리 ~ 키 설정 delete cascade 
+	, authority_name varchar(20) not null
+	, constraint id_authority FOREIGN KEY(id) REFERENCES public.trainer(id)
+);

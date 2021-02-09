@@ -1,0 +1,11 @@
+create table public.friend (
+	friendno int not null
+	, id varchar(30) not null  --포리 ~ 키 설정 delete cascade 
+	, friend_id varchar(30) not null
+	, active boolean default false
+	, constraint friend_foreignkey1 FOREIGN KEY(id) REFERENCES public.trainer(id)
+	, constraint friend_foreignkey2 FOREIGN KEY(friend_id) REFERENCES public.trainer(id)
+	, constraint friend_uniquekey UNIQUE(id, friend_id)
+);
+
+CREATE SEQUENCE seq_friend START 1;

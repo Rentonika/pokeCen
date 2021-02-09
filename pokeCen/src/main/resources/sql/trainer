@@ -1,0 +1,17 @@
+create table public.trainer (
+trainerno int not null
+, id varchar(30)	not null primary key
+, pw varchar(500)	not null -- not null일 필요 없지 않나?
+, name varchar(15) not null
+, country varchar(100)
+, phone varchar(100)
+, email varchar(100)
+, authkey varchar(100)
+, online boolean default false
+, isAccountNonExpired boolean default true	-- 이메일 인증 시, 이 중 한 가지를 활용
+, isAccountNonLocked boolean default true
+, isCredentialNonExpired boolean default true
+, isEnabled boolean default false
+);
+
+CREATE SEQUENCE seq_trainer START 1;

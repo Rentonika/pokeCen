@@ -1,0 +1,12 @@
+create table public.pokemon (
+pokeno int primary key
+, name varchar(30)	not null unique
+, type varchar(30)	
+, height int
+, weight int
+, habitat varchar(100)
+, sound varchar(100)
+, description varchar(500)
+);
+
+CREATE SEQUENCE seq_pokemon START 1;

@@ -1,0 +1,16 @@
+create table public.entry (
+	entryno int primary key
+	, pokeno int not null
+	, poke_name varchar(30)	not null
+	, nickname varchar(50)
+	, trainer_id varchar(30) not null
+	, status varchar(30)
+	, boxno int 
+	, constraint entry_foreignkey1 FOREIGN KEY(pokeno) REFERENCES public.pokemon(pokeno)
+	, constraint entry_foreignkey2 FOREIGN KEY(poke_name) REFERENCES public.pokemon(name)
+	, constraint entry_foreignkey3 FOREIGN KEY(trainer_id) REFERENCES public.trainer(id)
+	, constraint entry_status check (status in ('own', 'box', 'exchanged', 'released'))
+	, constraint entry_foreignkey4 foreign key(boxno) references public.box(boxno)
+);
+
+CREATE SEQUENCE seq_entry START 1;

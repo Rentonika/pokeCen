@@ -1,0 +1,11 @@
+create table public.box (
+	boxno int primary key
+	, trainer_id varchar(30) not null
+	, trainer_box_no int not null
+	, amount int not null 
+	, constraint box_foreignkey1 foreign key(boxno) references public.box(boxno)
+	, constraint box_foreignkey2 foreign key(trainer_id) references public.trainer(id)
+	, constraint box_uniquekey1 unique(trainer_id, trainer_box_no)
+);
+
+CREATE SEQUENCE seq_box START 1;
