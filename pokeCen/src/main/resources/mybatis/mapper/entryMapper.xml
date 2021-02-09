@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.pokemon.demo.dao.EntryMapper">
+
+	<!-- DB 포켓몬 리스트 -->
+	<select id="pokemonList" resultType="Pokemon">
+		select * from public.pokemon order by pokeno
+	</select>
+	
+	<!-- 내 엔트리 가져오기 -->
+	<select id="myEntryList" parameterType="Entry" resultType="Entry">
+		select * from public.entry where trainer_id = #{trainer_id} and status = #{status}
+	</select>
+	
+	<!-- 엔트리 인서트 -->
+	<insert id="insertEntry" parameterType="Entry">
+		insert into public.entry (
+			entryno
+			, pokeno
+			, poke_name
+			, nickname
+			, trainer_id
+			, status
+		<if test="boxNo != 0">
+			, boxno
+		</if>
+		) values (
+			nextval('seq_entry')
+			, #{pokeNo}
+			, #{poke_name}
+			, #{nickname}
+			, #{trainer_id}
+			, #{status}
+		<if test="boxNo != 0">
+			, #{boxNo}
+		</if>
+		)
+		
+	</insert>
+	
+	<select id="getInsertableBox" resultType="Box" parameterType="String">
+		select 
+			boxno, trainer_id, trainer_box_no, amount 
+		from 
+			public.box 
+		where 
+			trainer_id = #{trainer_id} 
+		and 
+			trainer_box_no = (select max(trainer_box_no) from public.box where trainer_id = #{trainer_id})	
+	</select>
+	
+	<insert id="insertNewBox" parameterType="Box">
+		insert into public.box (
+			boxno
+			, trainer_id
+			, trainer_box_no
+			, amount
+		) values (
+			nextval('seq_box')
+			, #{trainer_id}
+			, #{trainer_box_no}
+			, #{amount}
+		)
+	</insert>
+	
+	<update id="updateBoxAmount" parameterType="Box">
+		update public.box
+		set amount = amount + 1
+		where boxno = #{boxno}
+	</update>
+
+</mapper>

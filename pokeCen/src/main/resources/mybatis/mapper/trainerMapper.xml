@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.pokemon.demo.dao.TrainerMapper">
+	
+	<select id="getTrainerById" parameterType="String" resultType="Trainer">
+		select * from public.trainer where id = #{id}
+	
+	</select>
+	
+	<select id="getTrainerByEmail" parameterType="String" resultType="Trainer">
+		select * from public.trainer where email = #{email} and authKey is null
+	</select>
+	
+	<select id="getTrainerAuthKey" parameterType="Trainer" resultType="Trainer">
+		select 
+			* 
+		from 
+			public.trainer 
+		where 
+			id = #{id}
+		and 
+			email = #{email}
+		and 
+			authkey = #{authKey}
+	</select>
+	
+	<select id="getTrainerAuthority" parameterType="String" resultType="String">
+		select authority_name from public.trainer_authority where id = #{id}
+	</select>
+	
+	<insert id="insertTrainer" parameterType="Trainer">
+		insert into public.trainer (
+			trainerno
+			, id
+			, pw
+			, name
+			, country
+			, phone
+			, email
+			, isenabled
+		) values (
+			nextval('seq_trainer')
+			, #{id}
+			, #{pw}
+			, #{name}
+			, #{country}
+			, #{phone}
+			, #{email}
+			, #{isEnabled}
+		)
+				
+	</insert>
+	
+	<insert id="insertTrainerAuthority" parameterType="String">
+	
+		insert into public.trainer_authority (
+			id 
+			, authority_name
+		) values (
+			#{id}
+			, #{authority}
+		)
+		
+	</insert>
+
+	<update id="updateAuthKey" parameterType="Trainer">
+		update 
+			public.trainer
+		set 
+			authkey = #{authKey}
+		where
+			id = #{id}
+	</update>
+	
+	<update id="confirmEmail" parameterType="Trainer">
+		update 
+			public.trainer
+		set 
+			isenabled = true
+		where
+			id = #{id}
+	</update>
+	
+	<update id="onlineStatus" parameterType="Trainer">
+		update
+			public.trainer
+		set
+			online = #{online}
+		where
+			id = #{id}
+	</update>
+	
+	<update id="updateTrainerData" parameterType="Trainer">
+		update
+			public.trainer
+		set
+			name = #{name}
+		<if test="phone != null and !phone.equals('')">
+			, phone = #{phone}
+		</if>
+		where
+			id = #{id}
+	
+	</update>
+	
+</mapper>

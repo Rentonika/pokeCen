@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+	<typeAliases>
+		<typeAlias type="com.pokemon.demo.vo.Trainer" alias="Trainer"/>
+		<typeAlias type="com.pokemon.demo.vo.Authority" alias="Authority"/>
+		<typeAlias type="com.pokemon.demo.vo.Friend" alias="Friend"/>
+		<typeAlias type="com.pokemon.demo.vo.Pokemon" alias="Pokemon"/>
+		<typeAlias type="com.pokemon.demo.vo.Entry" alias="Entry"/>
+		<typeAlias type="com.pokemon.demo.vo.Box" alias="Box"/>
+	</typeAliases>
+	<mappers>
+		<mapper resource="mybatis/mapper/trainerMapper.xml"/>
+		<mapper resource="mybatis/mapper/friendMapper.xml"/>
+		<mapper resource="mybatis/mapper/entryMapper.xml"/>
+	</mappers>
+</configuration>

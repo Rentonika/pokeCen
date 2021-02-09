@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.pokemon.demo.dao.FriendMapper">
+
+	<!-- 친구 이름 검색 -->
+	<select id="searchTrainerById" parameterType="HashMap" resultType="Trainer">	
+			select 
+				*
+			from
+				public.trainer
+			where
+				id like '%' || #{searchId} || '%'	
+			and
+				id not in (select friend_id from public.friend where id = #{id})
+			and 
+				id not in (#{id})
+	</select>
+	
+	
+	<!-- 내 친구 리스트 가져오기 : 접속여부까지 -->
+	<select id="myFriendList" parameterType="String" resultType="Trainer">
+		select 
+			public.friend.friend_id as id
+			, public.trainer.name as name
+			, public.trainer.online as online
+		from 
+			public.trainer, public.friend 
+		where 
+			public.friend.friend_id = public.trainer.id
+		and
+			public.friend.id = #{id}
+		and
+			public.friend.active = true
+		
+	</select>
+
+	<!-- 친구 신청 리스트 가져오기 -->
+	<select id="myFollowerList" parameterType="String" resultType="Trainer">
+		select 
+			public.friend.friend_id as id
+			, public.trainer.name as name
+			, public.trainer.email as email
+			, public.trainer.phone as phone
+			, public.trainer.online as online
+			, public.trainer.country as country
+		from 
+			public.friend, public.trainer
+		where
+			public.friend.friend_id = public.trainer.id
+		and 	
+			public.friend.id = #{id}
+		and
+			active = false
+	</select>
+	
+	<!-- 신청받은 친구 수락 -->
+	<update id="acceptFollower" parameterType="Friend">
+		update 
+			public.friend
+		set
+			active = true
+		where
+			id = #{id}
+		and
+			friend_id = #{friend_id}
+		and
+			active = false
+	</update>
+
+	<!-- 친구 추가 -->
+	<insert id="insertFriend" parameterType="Friend">
+		insert into public.friend (
+			friendno
+			, id
+			, friend_id
+			, active
+		) values (
+			nextval('seq_friend')
+			, #{id}
+			, #{friend_id}
+			, #{active}
+		)
+	</insert>
+	
+	<!-- 친구 삭제 -->
+	<delete id="deleteFriend" parameterType="Friend">
+		delete from public.friend where id = #{id} and friend_id = #{friend_id}
+	</delete>
+
+</mapper>
